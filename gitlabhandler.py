@@ -21,7 +21,7 @@ class GitLabHandler:
     
     def get_my_issues(self):
         return self._get(f"projects/{self.projectID}/issues",
-        {"author_username": self.user})
+        {"assignee_username": self.user})
     
     def get_issue(self, id):
         return self._get(f"projects/{self.projectID}/issues/{id}")

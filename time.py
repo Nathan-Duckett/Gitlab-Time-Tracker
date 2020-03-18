@@ -30,6 +30,8 @@ def print_help():
 def process_input(value):
     if (value == "show all"):
         show_all()
+    elif (value == "show mine"):
+        show_mine()
     elif (value.startswith("show ")):
         id = extract_id(value)
         show_specific(id)
@@ -77,6 +79,16 @@ def show_specific(id):
     print(f"Description: {out['description']}")
     print(f"Time Spent: {out['time_stats']['human_total_time_spent']}  Estimated Time: {out['time_stats']['human_time_estimate']}")
 
+
+def show_mine():
+    out = data.get_my_issues()
+    for entry in out:
+        # print(entry)
+        fstr = f"{entry['iid']} | {entry['state']} | {entry['title']}"
+        print(fstr)
+
+    # Output final empty line
+    print("\n")
 
 def spend(id, time_str):
     out = data.update_spent(id, time_str)
