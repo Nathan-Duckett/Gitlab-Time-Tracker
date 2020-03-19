@@ -120,7 +120,18 @@ def reset_estimate(id):
 
 def main():
     parser = argparse.ArgumentParser()
+    # Interactive Mode
     parser.add_argument("--interactive", "-i", help="Interactive version of the application", action="store_true")
+
+    # Complete modes
+    parser.add_argument("--show-all", "-a", help="Show all issues", action="store_true")
+    parser.add_argument("--show-mine", "-m", help="Show my issues", action="store_true")
+    parser.add_argument("--show", "-s", help="Show an issue - Based on id")
+
+    parser.add_argument("--issue-id", "-id", help="Specify the issue ID number for use with estimates/spent time") 
+    parser.add_argument("--estimate", "-e", help="Set the estimated time for an issue (Relys on iid)") 
+    parser.add_argument("--spend", help="Add to the spent time for an issue (Relys on iid)")
+
     args = parser.parse_args()
 
     if (args.interactive):
@@ -134,6 +145,20 @@ def main():
                 print_help()
             else:
                 process_input(value)
+    elif args.show_all:
+        show_all()
+    elif args.show_mine:
+        show_mine()
+    elif args.show:
+        show_specific(args.show)
+    elif args.issue_id:
+        print(args.issue_id)
+        if args.estimate:
+            estimate(args.issue_id, args.estimate)
+        elif args.spend:
+            spend(args.issue_id, args.spend)
+    else:
+        print("You must provide arguments to run this script: If unsure use -i")
 
 
 if __name__ == '__main__':
