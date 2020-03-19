@@ -152,11 +152,12 @@ def main():
     elif args.show:
         show_specific(args.show)
     elif args.issue_id:
-        print(args.issue_id)
         if args.estimate:
             estimate(args.issue_id, args.estimate)
         elif args.spend:
             spend(args.issue_id, args.spend)
+        else:
+            print("No option chosen to handle ticket ID")
     else:
         print("You must provide arguments to run this script: If unsure use -i")
 
