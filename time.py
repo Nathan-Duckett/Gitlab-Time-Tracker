@@ -61,11 +61,15 @@ def extract_time(value, indent=2):
     content = value.split(" ")
     return content[indent]
 
-def show_all():
+def show_all(filter=None):
     out = data.get_all_issues()
 
     for entry in out:
-        # print(entry)
+        # Add filter on issue state
+        if filter != None:
+            if entry['state'] != filter:
+                continue
+        
         fstr = f"{entry['iid']} | {entry['state']} | {entry['title']}"
         print(fstr)
 
@@ -80,10 +84,14 @@ def show_specific(id):
     print(f"Time Spent: {out['time_stats']['human_total_time_spent']}  Estimated Time: {out['time_stats']['human_time_estimate']}")
 
 
-def show_mine():
+def show_mine(filter=None):
     out = data.get_my_issues()
     for entry in out:
-        # print(entry)
+        # Add filter on issue state
+        if filter != None:
+            if entry['state'] != filter:
+                continue
+        
         fstr = f"{entry['iid']} | {entry['state']} | {entry['title']}"
         print(fstr)
 
@@ -127,6 +135,7 @@ def main():
     parser.add_argument("--show-all", "-a", help="Show all issues", action="store_true")
     parser.add_argument("--show-mine", "-m", help="Show my issues", action="store_true")
     parser.add_argument("--show", "-s", help="Show an issue - Based on id")
+    parser.add_argument("--filter", "-f", help="Filter the shown issues with a specific value")
 
     parser.add_argument("--issue-id", "-id", help="Specify the issue ID number for use with estimates/spent time") 
     parser.add_argument("--estimate", "-e", help="Set the estimated time for an issue (Relys on iid)") 
@@ -146,9 +155,9 @@ def main():
             else:
                 process_input(value)
     elif args.show_all:
-        show_all()
+        show_all(filter=args.filter)
     elif args.show_mine:
-        show_mine()
+        show_mine(filter=args.filter)
     elif args.show:
         show_specific(args.show)
     elif args.issue_id:
