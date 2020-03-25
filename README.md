@@ -22,8 +22,9 @@ Options for displaying issues:
 | Option | Usage |
 |--------|-------|
 | --show-all, -a | Show all of the issues in your projects |
-| --show-mine, -f | Show the issues that are assigned to you in your projects |
+| --show-mine, -m | Show the issues that are assigned to you in your projects |
 | --show ID, -s ID | Show detailed information about the issue with the specified ID (Including description, time spent, estimated time) |
+| --filter, -f | Filter the tickets based on their status (opened or closed) |
 
 Options for updating issues: Requires the use of ID tag to determine which issue to update.
 
