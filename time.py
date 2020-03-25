@@ -21,6 +21,7 @@ def print_help():
     print("estimate :id :timestr - Sets the estimated time of the issue to the value of timestr")
     print("reset estimate :id - resets the estimated time")
     print("reset spent :id - resets the time spent on the issue")
+    print("set sprint :id :sprint_number - Sets the issue into the milestone matching the sprint number")
     print("---")
     print("timestr is a human readable format of time using (S, M, H, D, M)")
     print("Can be combined e.g. 1h30m or 2d4h to set the estimated or spent time")
@@ -49,6 +50,10 @@ def process_input(value):
     elif (value.startswith("reset spent ")):
         id = extract_id(value, 2)
         reset_spend(id)
+    elif (value.startswith("set sprint ")):
+        id = extract_id(value, 2)
+        sprint_no = extract_id(value, 3)
+        set_sprint(id, sprint_no)
     else:
         print("Invalid option - Please try again")
 
@@ -125,6 +130,16 @@ def reset_estimate(id):
         print(f"Successfully reset time estimate to 0 on ticket {id}")
     return
 
+def set_sprint(id, sprint_no):
+    out = data.set_sprint(id, sprint_no)
+    if out == "No Change made":
+        print(out)
+    elif isinstance(out, int):
+        print(out)
+    else:
+        print(f"Sucessfully set issue {id} to Sprint {sprint_no}")
+    return
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -140,6 +155,7 @@ def main():
     parser.add_argument("--issue-id", "-id", help="Specify the issue ID number for use with estimates/spent time") 
     parser.add_argument("--estimate", "-e", help="Set the estimated time for an issue (Relys on iid)") 
     parser.add_argument("--spend", help="Add to the spent time for an issue (Relys on iid)")
+    parser.add_argument("--set-sprint", help="Set the Sprint Number on this Issue (Relys on iid)")
 
     args = parser.parse_args()
 
@@ -165,6 +181,8 @@ def main():
             estimate(args.issue_id, args.estimate)
         elif args.spend:
             spend(args.issue_id, args.spend)
+        elif args.set_sprint:
+            set_sprint(args.issue_id, args.set_sprint)
         else:
             print("No option chosen to handle ticket ID")
     else:
