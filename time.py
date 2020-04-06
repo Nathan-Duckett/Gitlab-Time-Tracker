@@ -85,6 +85,8 @@ def show_specific(id):
     out = data.get_issue(id)
     fstr = f"{out['iid']} | {out['state']} | {out['title']}"
     print(fstr)
+    if out['milestone']:
+        print(out["milestone"]["title"])
     print(f"Description: {out['description']}")
     print(f"Time Spent: {out['time_stats']['human_total_time_spent']}  Estimated Time: {out['time_stats']['human_time_estimate']}")
 
