@@ -16,6 +16,8 @@ data = GitLabHandler(config=load_config())
 def print_help():
     print("Available commands:")
     print("show all - Shows all issues in the repo")
+    print("show mine - Shows all issues assigned to your user")
+    print("show sprint :id - Shows all issues relating to the specified sprint number")
     print("show :id - Shows information about a specific issue")
     print("spend :id :timestr - Spends the timestr amount of time on the specific issue")
     print("estimate :id :timestr - Sets the estimated time of the issue to the value of timestr")
@@ -33,6 +35,9 @@ def process_input(value):
         show_all()
     elif (value == "show mine"):
         show_mine()
+    elif (value.startswith("show sprint ")):
+        id = extract_id(value, 2)
+        show_sprint(id)
     elif (value.startswith("show ")):
         id = extract_id(value)
         show_specific(id)
@@ -68,18 +73,7 @@ def extract_time(value, indent=2):
 
 def show_all(filter=None):
     out = data.get_all_issues()
-
-    for entry in out:
-        # Add filter on issue state
-        if filter != None:
-            if entry['state'] != filter:
-                continue
-        
-        fstr = f"{entry['iid']} | {entry['state']} | {entry['title']}"
-        print(fstr)
-
-    # Output final empty line
-    print("\n")
+    print_issue_list(out, filter)
 
 def show_specific(id):
     out = data.get_issue(id)
@@ -91,6 +85,15 @@ def show_specific(id):
 
 def show_mine(filter=None):
     out = data.get_my_issues()
+    print_issue_list(out, filter)
+
+
+def show_sprint(sprint_number, filter=None):
+    out = data.get_sprint_issues(f"Sprint {sprint_number}")
+    print_issue_list(out, filter)
+
+
+def print_issue_list(out, filter):
     for entry in out:
         # Add filter on issue state
         if filter != None:
@@ -99,9 +102,10 @@ def show_mine(filter=None):
         
         fstr = f"{entry['iid']} | {entry['state']} | {entry['title']}"
         print(fstr)
-
+    
     # Output final empty line
     print("\n")
+    return
 
 def spend(id, time_str):
     out = data.update_spent(id, time_str)
@@ -149,6 +153,7 @@ def main():
     # Complete modes
     parser.add_argument("--show-all", "-a", help="Show all issues", action="store_true")
     parser.add_argument("--show-mine", "-m", help="Show my issues", action="store_true")
+    parser.add_argument("--show-sprint", "-sprint", help="Show issues relating to the specified sprint number")
     parser.add_argument("--show", "-s", help="Show an issue - Based on id")
     parser.add_argument("--filter", "-f", help="Filter the shown issues with a specific value")
 
@@ -174,6 +179,8 @@ def main():
         show_all(filter=args.filter)
     elif args.show_mine:
         show_mine(filter=args.filter)
+    elif args.show_sprint:
+        show_sprint(args.show_sprint, filter=args.filter)
     elif args.show:
         show_specific(args.show)
     elif args.issue_id:

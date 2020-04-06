@@ -23,6 +23,10 @@ class GitLabHandler:
         return self._get(f"projects/{self.projectID}/issues",
                          {"assignee_username": self.user})
 
+    def get_sprint_issues(self, sprint_name):
+        return self._get(f"projects/{self.projectID}/issues",
+                         {"milestone": sprint_name})
+
     def get_issue(self, id):
         return self._get(f"projects/{self.projectID}/issues/{id}")
 
