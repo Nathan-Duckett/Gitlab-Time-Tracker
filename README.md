@@ -31,18 +31,31 @@ By default easiest method is using interactive mode `-i` otherwise commands can 
 
 Options for displaying issues:
 
-| Option | Usage |
-|--------|-------|
-| --show-all, -a | Show all of the issues in your projects |
-| --show-mine, -m | Show the issues that are assigned to you in your projects |
-| --show ID, -s ID | Show detailed information about the issue with the specified ID (Including description, time spent, estimated time) |
-| --filter, -f | Filter the tickets based on their status (opened or closed) |
+```bash
+usage: time.py [-h] [--interactive] [--show-all] [--show-mine]
+               [--show-sprint SHOW_SPRINT] [--show SHOW] [--filter FILTER]
+               [--issue-id ISSUE_ID] [--estimate ESTIMATE] [--spend SPEND]
+               [--set-sprint SET_SPRINT]
+               [--issue-ids ISSUE_IDS [ISSUE_IDS ...]]
 
-Options for updating issues: Requires the use of ID tag to determine which issue to update.
-
-| Option | Usage |
-|--------|-------|
-| --issue-id ID, -id ID | Specify the issue ID number for use with estimates/spent time |
-| --estimate TIME_STR, -e TIME_STR | Set the estimated time for an issue (Relys on iid) |
-| --spend TIME_STR | Add to the spent time for an issue (Relys on iid) |
-| --set-sprint SPRINT_NO | Set the issue to be part of the sprint number provided (Relys on iid) |
+optional arguments:
+  -h, --help            show this help message and exit
+  --interactive, -i     Interactive version of the application
+  --show-all, -a        Show all issues
+  --show-mine, -m       Show my issues
+  --show-sprint SHOW_SPRINT, -ss SHOW_SPRINT
+                        Show issues relating to the specified sprint number
+  --show SHOW, -s SHOW  Show an issue - Based on id
+  --filter FILTER, -f FILTER
+                        Filter the shown issues with a specific value
+  --issue-id ISSUE_ID, -id ISSUE_ID
+                        Specify the issue ID number for use with
+                        estimates/spent time
+  --estimate ESTIMATE, -e ESTIMATE
+                        Set the estimated time for an issue (Relys on iid)
+  --spend SPEND         Add to the spent time for an issue (Relys on iid)
+  --set-sprint SET_SPRINT, -sprint SET_SPRINT
+                        Set the Sprint Number on this Issue (Relys on iid)
+  --issue-ids ISSUE_IDS [ISSUE_IDS ...], -ids ISSUE_IDS [ISSUE_IDS ...]
+                        Specifiy multiple issue ids to bulk assign to a sprint
+```
