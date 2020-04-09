@@ -148,13 +148,7 @@ def set_sprint(id, sprint_no):
 
 def set_sprint_list(ticket_ids, sprint_no):
     for id in ticket_ids:
-        out = data.set_sprint(id, sprint_no)
-        if out == "No Change made":
-            print(out)
-        elif isinstance(out, int):
-            print(out)
-        else:
-            print(f"Sucessfully set issue {id} to Sprint {sprint_no}")
+        set_sprint(id, sprint_no)
     
     return
 
