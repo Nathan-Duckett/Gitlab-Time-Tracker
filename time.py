@@ -146,6 +146,18 @@ def set_sprint(id, sprint_no):
         print(f"Sucessfully set issue {id} to Sprint {sprint_no}")
     return
 
+def set_sprint_list(ticket_ids, sprint_no):
+    for id in ticket_ids:
+        out = data.set_sprint(id, sprint_no)
+        if out == "No Change made":
+            print(out)
+        elif isinstance(out, int):
+            print(out)
+        else:
+            print(f"Sucessfully set issue {id} to Sprint {sprint_no}")
+    
+    return
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -155,14 +167,17 @@ def main():
     # Complete modes
     parser.add_argument("--show-all", "-a", help="Show all issues", action="store_true")
     parser.add_argument("--show-mine", "-m", help="Show my issues", action="store_true")
-    parser.add_argument("--show-sprint", "-sprint", help="Show issues relating to the specified sprint number")
+    parser.add_argument("--show-sprint", "-ss", help="Show issues relating to the specified sprint number")
     parser.add_argument("--show", "-s", help="Show an issue - Based on id")
     parser.add_argument("--filter", "-f", help="Filter the shown issues with a specific value")
 
     parser.add_argument("--issue-id", "-id", help="Specify the issue ID number for use with estimates/spent time") 
     parser.add_argument("--estimate", "-e", help="Set the estimated time for an issue (Relys on iid)") 
     parser.add_argument("--spend", help="Add to the spent time for an issue (Relys on iid)")
-    parser.add_argument("--set-sprint", help="Set the Sprint Number on this Issue (Relys on iid)")
+    parser.add_argument("--set-sprint", "-sprint", help="Set the Sprint Number on this Issue (Relys on iid)")
+    
+    # Multiple issue ids
+    parser.add_argument("--issue-ids", "-ids", nargs="+", help="Specifiy multiple issue ids to bulk assign to a sprint")
 
     args = parser.parse_args()
 
@@ -194,6 +209,11 @@ def main():
             set_sprint(args.issue_id, args.set_sprint)
         else:
             print("No option chosen to handle ticket ID")
+    elif args.issue_ids:
+        if args.set_sprint:
+            set_sprint_list(args.issue_ids, args.set_sprint)
+        else:
+            print("No option chosen to handle ticket IDs list")
     else:
         print("You must provide arguments to run this script: If unsure use -i")
 
